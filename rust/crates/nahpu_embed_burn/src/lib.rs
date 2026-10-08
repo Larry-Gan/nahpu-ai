@@ -14,17 +14,19 @@ pub use clip::{load_clip, ClipModel, CLIP_MODEL_NAMES};
 pub use jina::{load_jina_text, load_jina_vision, JINA_LOGIT_SCALE};
 pub use minilm::load_minilm;
 
-#[cfg(all(
-    feature = "flex",
-    not(any(feature = "metal", feature = "vulkan", feature = "wgpu"))
-))]
-pub type SelectedBackend = burn::backend::Flex;
-#[cfg(feature = "metal")]
-pub type SelectedBackend = burn::backend::Metal;
-#[cfg(all(feature = "vulkan", not(feature = "metal")))]
-pub type SelectedBackend = burn::backend::Vulkan;
-#[cfg(all(feature = "wgpu", not(any(feature = "metal", feature = "vulkan"))))]
-pub type SelectedBackend = burn::backend::Wgpu;
+/// Never `Device::default()`: it picks the highest-priority backend compiled
+/// into Burn, and `BURN_DEVICE` overrides it.
+#[allow(dead_code)]
+fn selected_device() -> Device {
+    #[cfg(feature = "metal")]
+    return Device::metal(DeviceKind::DefaultDevice);
+    #[cfg(all(feature = "vulkan", not(feature = "metal")))]
+    return Device::vulkan(DeviceKind::DefaultDevice);
+    #[cfg(all(feature = "wgpu", not(any(feature = "metal", feature = "vulkan"))))]
+    return Device::wgpu(DeviceKind::DefaultDevice);
+    #[cfg(not(any(feature = "metal", feature = "vulkan", feature = "wgpu")))]
+    return Device::flex();
+}
 
 pub const BACKEND_NAME: &str = if cfg!(feature = "metal") {
     "burn-metal"
@@ -60,12 +62,12 @@ fn read_weights(path: &str) -> Result<Bytes> {
     Ok(Bytes::from_elems(weights))
 }
 
-fn rows_of(output: Tensor<SelectedBackend, 2>) -> Vec<Vec<f32>> {
+fn rows_of(output: Tensor<2>) -> Vec<Vec<f32>> {
     let [_, width] = output.dims();
     output
         .into_data()
         .convert::<f32>()
-        .into_vec::<f32>()
+        .try_into_vec::<f32>()
         .expect("output tensor is f32")
         .chunks(width)
         .map(<[f32]>::to_vec)

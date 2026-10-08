@@ -1,5 +1,5 @@
 # Pinned so every contributor builds with the same compiler.
-# burn 0.21 requires 1.92 or newer.
+# burn 0.22 requires 1.95 or newer.
 [toolchain]
 channel = "1.96.0"
 components = ["rustfmt", "clippy"]

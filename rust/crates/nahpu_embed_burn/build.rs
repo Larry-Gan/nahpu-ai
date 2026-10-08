@@ -1,12 +1,7 @@
-use std::path::{Path, PathBuf};
+#[path = "../../build-support/models.rs"]
+mod models;
 
-use burn_onnx::{LoadStrategy, ModelGen};
-
-struct OnnxModel {
-    stem: &'static str,
-    cfg: &'static str,
-    weights_env: &'static str,
-}
+use models::OnnxModel;
 
 const MODELS: [OnnxModel; 5] = [
     OnnxModel {
@@ -37,62 +32,7 @@ const MODELS: [OnnxModel; 5] = [
 ];
 
 fn main() {
-    println!("cargo::rerun-if-env-changed=NAHPU_MODEL_DIR");
-
-    let models = models_dir();
-    println!("cargo::rustc-env=NAHPU_MODELS_DIR={}", models.display());
-    watch_for_models_appearing(&models);
-
     for model in &MODELS {
-        println!("cargo::rustc-check-cfg=cfg({})", model.cfg);
-
-        let onnx = models.join(format!("{}.onnx", model.stem));
-        println!("cargo::rerun-if-changed={}", onnx.display());
-        if !onnx.exists() {
-            warn_model_missing(&onnx);
-            continue;
-        }
-
-        generate_without_baked_paths(&onnx);
-        println!("cargo::rustc-env={}={}", model.weights_env, generated_weights(model.stem).display());
-        println!("cargo::rustc-cfg={}", model.cfg);
+        models::import_if_present(model);
     }
-}
-
-fn generate_without_baked_paths(onnx: &Path) {
-    ModelGen::new()
-        .input(onnx.to_str().expect("model path is not valid UTF-8"))
-        .out_dir("model/")
-        .load_strategy(LoadStrategy::Bytes)
-        .run_from_script();
-}
-
-fn generated_weights(stem: &str) -> PathBuf {
-    PathBuf::from(std::env::var("OUT_DIR").expect("cargo sets OUT_DIR"))
-        .join("model")
-        .join(format!("{stem}.bpk"))
-}
-
-fn models_dir() -> PathBuf {
-    if let Ok(overridden) = std::env::var("NAHPU_MODEL_DIR") {
-        return PathBuf::from(overridden);
-    }
-    let fallback = PathBuf::from(env!("CARGO_MANIFEST_DIR")).join("../../../models");
-    fallback.canonicalize().unwrap_or(fallback)
-}
-
-/// Watches the directory as well as the files: cargo cannot reliably notice a
-/// path that does not exist yet, and the first fetch creates both.
-fn watch_for_models_appearing(models: &Path) {
-    let parent = models.parent().unwrap_or(models);
-    println!("cargo::rerun-if-changed={}", parent.display());
-    println!("cargo::rerun-if-changed={}", models.display());
-}
-
-fn warn_model_missing(onnx: &Path) {
-    println!(
-        "cargo::warning=no ONNX at {} — building without it. \
-         Run scripts/fetch-model.sh to enable it.",
-        onnx.display()
-    );
 }

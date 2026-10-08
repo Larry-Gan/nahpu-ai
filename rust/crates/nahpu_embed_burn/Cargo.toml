@@ -17,11 +17,11 @@ vulkan = ["burn/vulkan"]
 nahpu_embed_core.workspace = true
 anyhow.workspace = true
 burn.workspace = true
-burn-store = "0.21"
+burn-store = "0.22.0"
 tokenizers = "0.21"
 
 [build-dependencies]
-burn-onnx = "0.21"
+burn-onnx = "0.22.0"
 
 [dev-dependencies]
 image = { version = "0.25", default-features = false }
