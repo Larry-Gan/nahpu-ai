@@ -7,11 +7,12 @@ repository.workspace = true
 publish = false
 
 [features]
-metal = ["nahpu_embed_burn/metal"]
+metal = ["nahpu_embed_burn/metal", "nahpu_ocr_burn/metal"]
 
 [dependencies]
 nahpu_embed_core.workspace = true
 nahpu_embed_burn.workspace = true
+nahpu_ocr_burn.workspace = true
 anyhow.workspace = true
 clap = { version = "4", features = ["derive"] }
 csv = "1"

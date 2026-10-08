@@ -1,0 +1,592 @@
+{
+ "fixture": "two-column.png",
+ "image_width": 1200,
+ "image_height": 800,
+ "route": "paddleocr.PaddleOCR (paddlex OCR pipeline) with engine='onnxruntime' on the pinned ONNX files",
+ "packages": {
+  "python": "3.12.0",
+  "paddleocr": "3.7.0",
+  "paddlex": "3.7.2",
+  "onnxruntime": "1.30.0",
+  "numpy": "2.3.5",
+  "opencv-contrib-python": "4.10.0.84",
+  "pyclipper": "1.4.0",
+  "shapely": "2.1.2",
+  "pillow": "12.3.0",
+  "matplotlib": "3.11.2",
+  "paddlepaddle": null
+ },
+ "models": {
+  "dir_env": "NAHPU_MODEL_DIR",
+  "det": {
+   "name": "PP-OCRv6_small_det",
+   "onnx": "PP-OCRv6_small_det.onnx",
+   "onnx_sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+   "yml": "PP-OCRv6_small_det.yml",
+   "yml_sha256": "193f435274bf9f0b5f71a929bbfbcf148282df7e633b34e7c373e8f44741b516"
+  },
+  "rec": {
+   "name": "PP-OCRv6_small_rec",
+   "onnx": "PP-OCRv6_small_rec.onnx",
+   "onnx_sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+   "yml": "PP-OCRv6_small_rec.yml",
+   "yml_sha256": "ab078671bb49f06228eadccd34f1bb501e157f7a047095ffb943ba81512c77d1"
+  }
+ },
+ "params": {
+  "pipeline_image_reader_format": "BGR",
+  "use_doc_orientation_classify": false,
+  "use_doc_unwarping": false,
+  "use_textline_orientation": false,
+  "det": {
+   "image_reader_format": "BGR",
+   "resize": "DetResizeForTest type0",
+   "limit_side_len": 64,
+   "limit_type": "min",
+   "max_side_limit": 4000,
+   "resize_round": "python round() (half to even) of side/32, times 32, min 32",
+   "interpolation": "cv2.INTER_LINEAR",
+   "normalize_scale": "1./255.",
+   "normalize_mean": [
+    0.485,
+    0.456,
+    0.406
+   ],
+   "normalize_std": [
+    0.229,
+    0.224,
+    0.225
+   ],
+   "normalize_order": "hwc",
+   "normalize_alpha": [
+    0.017124753831663668,
+    0.01750700280112045,
+    0.017429193899782133
+   ],
+   "normalize_beta": [
+    -2.1179039301310043,
+    -2.0357142857142856,
+    -1.8044444444444445
+   ],
+   "mean_std_applied_to_channels": "in image order, i.e. B,G,R",
+   "layout": "NCHW",
+   "thresh": 0.3,
+   "box_thresh": 0.6,
+   "unclip_ratio": 1.5,
+   "max_candidates": 3000,
+   "min_size": 3,
+   "score_mode": "fast",
+   "use_dilation": false,
+   "box_type": "quad",
+   "sort": "SortQuadBoxes: sort by (y0, x0), then bubble left-to-right when |dy| < 10"
+  },
+  "crop": {
+   "method": "CropByPolys quad: minAreaRect of int32 quad, perspective warp",
+   "interpolation": "cv2.INTER_CUBIC",
+   "border": "cv2.BORDER_REPLICATE",
+   "rotate_when_h_over_w_at_least": 1.5,
+   "rotation": "np.rot90 (counter-clockwise)"
+  },
+  "rec": {
+   "image_reader_format": "BGR",
+   "image_shape": [
+    3,
+    48,
+    320
+   ],
+   "max_width": 3200,
+   "interpolation": "cv2.INTER_LINEAR",
+   "normalize": "x / 255, then (x - 0.5) / 0.5",
+   "pad": "right, value 0.0 after normalisation",
+   "batch_size": 1,
+   "pipeline_default_batch_size": 6,
+   "batch_size_note": "batch 6 pads crops to the widest in the batch; scores moved by up to 0.025 on these fixtures (0.022 on form.png)",
+   "score_thresh": 0.0,
+   "decode": "CTC greedy: argmax per step, merge repeats, drop blank index 0",
+   "score": "mean of max probability over kept steps (0 if none)",
+   "dictionary_source": "PostProcess.character_dict in the rec yml",
+   "dictionary_entries_in_yml": 18708,
+   "space_appended": true,
+   "blank_prepended": true,
+   "class_count": 18710
+  }
+ },
+ "det_params_reported_by_pipeline": {
+  "limit_side_len": 64,
+  "limit_type": "min",
+  "thresh": 0.3,
+  "max_side_limit": 4000,
+  "box_thresh": 0.6,
+  "unclip_ratio": 1.5
+ },
+ "check": {
+  "expected_line_count": 20,
+  "detected_line_count": 20,
+  "same_set_of_lines": true,
+  "missing": [],
+  "unexpected": [],
+  "pipeline_order_equals_reading_order": false
+ },
+ "lines": [
+  {
+   "text": "Field Notes from the Crocker Range",
+   "score": 0.9948234558105469,
+   "det_score": 0.7882140885726319,
+   "quad": [
+    [
+     58,
+     60
+    ],
+    [
+     868,
+     66
+    ],
+    [
+     867,
+     107
+    ],
+    [
+     58,
+     101
+    ]
+   ]
+  },
+  {
+   "text": "We reached the ridge camp",
+   "score": 0.9986268877983093,
+   "det_score": 0.8568455509914432,
+   "quad": [
+    [
+     58,
+     171
+    ],
+    [
+     450,
+     173
+    ],
+    [
+     450,
+     204
+    ],
+    [
+     58,
+     202
+    ]
+   ]
+  },
+  {
+   "text": "In the morning we checked",
+   "score": 0.9998283982276917,
+   "det_score": 0.91270165334992,
+   "quad": [
+    [
+     659,
+     173
+    ],
+    [
+     1041,
+     173
+    ],
+    [
+     1041,
+     203
+    ],
+    [
+     659,
+     203
+    ]
+   ]
+  },
+  {
+   "text": "late in the afternoon after",
+   "score": 0.9993991255760193,
+   "det_score": 0.8705670415306029,
+   "quad": [
+    [
+     59,
+     233
+    ],
+    [
+     425,
+     233
+    ],
+    [
+     425,
+     263
+    ],
+    [
+     59,
+     263
+    ]
+   ]
+  },
+  {
+   "text": "every trap and found three",
+   "score": 0.9963580369949341,
+   "det_score": 0.8619545321637251,
+   "quad": [
+    [
+     659,
+     232
+    ],
+    [
+     1043,
+     233
+    ],
+    [
+     1043,
+     264
+    ],
+    [
+     659,
+     263
+    ]
+   ]
+  },
+  {
+   "text": "a long climb through mossy",
+   "score": 0.9954049587249756,
+   "det_score": 0.8929298960688712,
+   "quad": [
+    [
+     58,
+     292
+    ],
+    [
+     452,
+     294
+    ],
+    [
+     452,
+     324
+    ],
+    [
+     58,
+     322
+    ]
+   ]
+  },
+  {
+   "text": "shrews and one squirrel.",
+   "score": 0.9999022483825684,
+   "det_score": 0.8949745847014607,
+   "quad": [
+    [
+     659,
+     293
+    ],
+    [
+     1008,
+     293
+    ],
+    [
+     1008,
+     323
+    ],
+    [
+     659,
+     323
+    ]
+   ]
+  },
+  {
+   "text": "forest. The trail was wet",
+   "score": 0.9851848483085632,
+   "det_score": 0.8781905613407633,
+   "quad": [
+    [
+     57,
+     353
+    ],
+    [
+     403,
+     353
+    ],
+    [
+     403,
+     383
+    ],
+    [
+     57,
+     383
+    ]
+   ]
+  },
+  {
+   "text": "The team measured each one",
+   "score": 0.9998428821563721,
+   "det_score": 0.8754065283286027,
+   "quad": [
+    [
+     659,
+     353
+    ],
+    [
+     1080,
+     353
+    ],
+    [
+     1080,
+     383
+    ],
+    [
+     659,
+     383
+    ]
+   ]
+  },
+  {
+   "text": "and the rain did not stop",
+   "score": 0.997416079044342,
+   "det_score": 0.8958977763371093,
+   "quad": [
+    [
+     58,
+     412
+    ],
+    [
+     409,
+     414
+    ],
+    [
+     408,
+     444
+    ],
+    [
+     58,
+     442
+    ]
+   ]
+  },
+  {
+   "text": "and wrote the notes by the",
+   "score": 0.9994868636131287,
+   "det_score": 0.8854419815887884,
+   "quad": [
+    [
+     658,
+     413
+    ],
+    [
+     1042,
+     413
+    ],
+    [
+     1042,
+     443
+    ],
+    [
+     658,
+     443
+    ]
+   ]
+  },
+  {
+   "text": "until dusk. Four traps were",
+   "score": 0.9884117245674133,
+   "det_score": 0.8484809298502902,
+   "quad": [
+    [
+     58,
+     472
+    ],
+    [
+     440,
+     474
+    ],
+    [
+     440,
+     504
+    ],
+    [
+     58,
+     502
+    ]
+   ]
+  },
+  {
+   "text": "fire. Clouds came down over",
+   "score": 0.98349928855896,
+   "det_score": 0.8711827540218601,
+   "quad": [
+    [
+     657,
+     472
+    ],
+    [
+     1064,
+     473
+    ],
+    [
+     1064,
+     503
+    ],
+    [
+     657,
+     502
+    ]
+   ]
+  },
+  {
+   "text": "set along the stream and",
+   "score": 0.9998440742492676,
+   "det_score": 0.8784838053016659,
+   "quad": [
+    [
+     60,
+     533
+    ],
+    [
+     415,
+     533
+    ],
+    [
+     415,
+     563
+    ],
+    [
+     60,
+     563
+    ]
+   ]
+  },
+  {
+   "text": "the valley at noon, so we",
+   "score": 0.9760707020759583,
+   "det_score": 0.9265547503262411,
+   "quad": [
+    [
+     659,
+     535
+    ],
+    [
+     1013,
+     535
+    ],
+    [
+     1013,
+     562
+    ],
+    [
+     659,
+     562
+    ]
+   ]
+  },
+  {
+   "text": "six more near the old hut.",
+   "score": 0.9998655319213867,
+   "det_score": 0.8735757675548058,
+   "quad": [
+    [
+     58,
+     593
+    ],
+    [
+     424,
+     593
+    ],
+    [
+     424,
+     623
+    ],
+    [
+     58,
+     623
+    ]
+   ]
+  },
+  {
+   "text": "packed up and walked back.",
+   "score": 0.9997372031211853,
+   "det_score": 0.8972282866510864,
+   "quad": [
+    [
+     659,
+     594
+    ],
+    [
+     1059,
+     594
+    ],
+    [
+     1059,
+     624
+    ],
+    [
+     659,
+     624
+    ]
+   ]
+  },
+  {
+   "text": "Two rats were taken before",
+   "score": 0.9984610080718994,
+   "det_score": 0.8852144043203657,
+   "quad": [
+    [
+     58,
+     653
+    ],
+    [
+     446,
+     653
+    ],
+    [
+     446,
+     683
+    ],
+    [
+     58,
+     683
+    ]
+   ]
+  },
+  {
+   "text": "The next camp is lower.",
+   "score": 0.9980596303939819,
+   "det_score": 0.8689381791439053,
+   "quad": [
+    [
+     657,
+     651
+    ],
+    [
+     997,
+     653
+    ],
+    [
+     997,
+     684
+    ],
+    [
+     657,
+     682
+    ]
+   ]
+  },
+  {
+   "text": "midnight and kept in bags.",
+   "score": 0.995871901512146,
+   "det_score": 0.8640907483603384,
+   "quad": [
+    [
+     59,
+     711
+    ],
+    [
+     438,
+     714
+    ],
+    [
+     438,
+     745
+    ],
+    [
+     59,
+     742
+    ]
+   ]
+  }
+ ]
+}

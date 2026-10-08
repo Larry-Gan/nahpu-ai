@@ -15,9 +15,10 @@ use nahpu_embed_burn::{
 use nahpu_embed_core::preprocess::Framing;
 use nahpu_embed_core::zero_shot::{read_labels_csv, LabelWording, PromptSet, ZeroShotClassifier};
 use nahpu_embed_core::{cosine_similarity, TextRole};
+use nahpu_ocr_burn::{OcrEngine, HAS_OCR};
 
 #[derive(Parser)]
-#[command(about = "Try NAHPU embedding models by hand")]
+#[command(about = "Try NAHPU embedding and OCR models by hand")]
 struct Cli {
     #[command(subcommand)]
     command: Option<Command>,
@@ -71,6 +72,8 @@ enum Command {
         #[arg(required = true, num_args = 2..)]
         items: Vec<String>,
     },
+    /// Print the text lines in an image, in reading order.
+    Ocr { image: PathBuf },
 }
 
 #[derive(Args)]
@@ -164,6 +167,7 @@ fn main() -> Result<()> {
             wording: setup.wording.into(),
         }),
         Some(Command::Compare { items }) => compare_items(&items),
+        Some(Command::Ocr { image }) => read_text(&image),
     }
 }
 
@@ -174,6 +178,7 @@ fn report_what_is_available() {
     println!("jina-clip-v1:  {}", present(HAS_JINA));
     println!("bioclip:       {}", present(HAS_BIOCLIP));
     println!("nomic v1.5:    {}", present(HAS_NOMIC));
+    println!("PP-OCRv6:      {}", present(HAS_OCR));
     println!("clip models:   {}", CLIP_MODEL_NAMES.join(", "));
 }
 
@@ -237,4 +242,22 @@ fn compare_items(items: &[String]) -> Result<()> {
 fn has_image_extension(item: &str) -> bool {
     let extension = Path::new(item).extension().and_then(|extension| extension.to_str());
     extension.is_some_and(|extension| IMAGE_EXTENSIONS.iter().any(|known| extension.eq_ignore_ascii_case(known)))
+}
+
+fn read_text(image: &Path) -> Result<()> {
+    let engine = OcrEngine::load()?;
+    let encoded = std::fs::read(image).with_context(|| format!("could not read {}", image.display()))?;
+    let lines = engine.read(&encoded).with_context(|| format!("could not read text in {}", image.display()))?;
+
+    // A detected box in which nothing was recognised has no text to print.
+    let texts: Vec<&str> = lines.iter().map(|line| line.text.as_str()).filter(|text| !text.trim().is_empty()).collect();
+    match texts.len() {
+        0 => println!("{}: no text detected", image.display()),
+        1 => println!("{}: 1 line of text", image.display()),
+        count => println!("{}: {count} lines of text", image.display()),
+    }
+    for text in texts {
+        println!("  {text}");
+    }
+    Ok(())
 }

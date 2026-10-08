@@ -55,6 +55,37 @@ NAHPU_MODEL_DIR=/Volumes/work/models ./scripts/fetch-model.sh
 cd rust && NAHPU_MODEL_DIR=/Volumes/work/models cargo build
 ```
 
+## Reading text
+
+```sh
+./scripts/fetch-model.sh PP-OCRv6_small_det PP-OCRv6_small_rec   # about 10 MB and 21 MB
+cd rust && cargo run --bin cli -- ocr <image file>
+```
+
+The second prints how many lines of text it found, then the lines in reading
+order: columns one after the other, a form row by row. Without any it prints
+"no text detected". It reads JPEG, PNG, WebP, TIFF, BMP and GIF, turned upright
+by their EXIF orientation.
+
+Known limits:
+
+- No HEIC and no PDFs; convert them to one of the formats above first.
+- Recognition runs one line at a time, on the CPU by default. In a debug build
+  on a 20-core laptop, including loading the models, a 6-line label takes 1 to
+  4 s, a 20-line page 3 to 12 s and a 1400 x 2100 herbarium sheet 5 to 19 s. The
+  low figures are with the machine otherwise idle.
+- No text-direction classifier: a tall line is turned a quarter
+  counter-clockwise, so text that reads bottom to top comes out upside down.
+  Handwriting is only as good as the small model.
+- The hard NEON photos mostly fail. `scripts/fetch-model.sh` puts the four
+  named here in `models/`. On beetle labels turned sideways and partly hidden
+  by the specimen (`ocr02_beetle_pasimachus_sublaevis_label_sideways.jpg`,
+  `ocr03_beetle_pasimachus_marginatus_label_occluded.jpg`) only the upright
+  number label and a few scattered words come out. A number inked on a skull is
+  nearly read when upright (`hard01_mammal_napaeozapus_skull_ink_number.jpg`:
+  "NEON" and "p1047" for a slashed-zero 01047), not at all when tiny and upside
+  down (`hard02_mammal_sorex_rohweri_skull_ink_number.jpg`).
+
 ## Troubleshooting
 
 **`no ONNX at ... building without a model`**

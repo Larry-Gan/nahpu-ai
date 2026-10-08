@@ -1,0 +1,18 @@
+[package]
+name = "nahpu_burn_support"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "What the NAHPU Burn engine crates share: the device for the chosen backend, and weight loading."
+
+[features]
+default = ["flex"]
+flex = ["burn/flex"]
+wgpu = ["burn/wgpu"]
+metal = ["burn/metal"]
+vulkan = ["burn/vulkan"]
+
+[dependencies]
+anyhow.workspace = true
+burn.workspace = true

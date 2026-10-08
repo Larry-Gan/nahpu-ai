@@ -1,0 +1,521 @@
+{
+ "fixture": "ocr08_mammal_sorex_trowbridgii_handwritten_notes.jpg",
+ "image_width": 1400,
+ "image_height": 933,
+ "route": "paddleocr.PaddleOCR (paddlex OCR pipeline) with engine='onnxruntime' on the pinned ONNX files",
+ "packages": {
+  "python": "3.12.0",
+  "paddleocr": "3.7.0",
+  "paddlex": "3.7.2",
+  "onnxruntime": "1.30.0",
+  "numpy": "2.3.5",
+  "opencv-contrib-python": "4.10.0.84",
+  "pyclipper": "1.4.0",
+  "shapely": "2.1.2",
+  "pillow": "12.3.0",
+  "matplotlib": "3.11.2",
+  "paddlepaddle": null
+ },
+ "models": {
+  "dir_env": "NAHPU_MODEL_DIR",
+  "det": {
+   "name": "PP-OCRv6_small_det",
+   "onnx": "PP-OCRv6_small_det.onnx",
+   "onnx_sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+   "yml": "PP-OCRv6_small_det.yml",
+   "yml_sha256": "193f435274bf9f0b5f71a929bbfbcf148282df7e633b34e7c373e8f44741b516"
+  },
+  "rec": {
+   "name": "PP-OCRv6_small_rec",
+   "onnx": "PP-OCRv6_small_rec.onnx",
+   "onnx_sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+   "yml": "PP-OCRv6_small_rec.yml",
+   "yml_sha256": "ab078671bb49f06228eadccd34f1bb501e157f7a047095ffb943ba81512c77d1"
+  }
+ },
+ "params": {
+  "pipeline_image_reader_format": "BGR",
+  "use_doc_orientation_classify": false,
+  "use_doc_unwarping": false,
+  "use_textline_orientation": false,
+  "det": {
+   "image_reader_format": "BGR",
+   "resize": "DetResizeForTest type0",
+   "limit_side_len": 64,
+   "limit_type": "min",
+   "max_side_limit": 4000,
+   "resize_round": "python round() (half to even) of side/32, times 32, min 32",
+   "interpolation": "cv2.INTER_LINEAR",
+   "normalize_scale": "1./255.",
+   "normalize_mean": [
+    0.485,
+    0.456,
+    0.406
+   ],
+   "normalize_std": [
+    0.229,
+    0.224,
+    0.225
+   ],
+   "normalize_order": "hwc",
+   "normalize_alpha": [
+    0.017124753831663668,
+    0.01750700280112045,
+    0.017429193899782133
+   ],
+   "normalize_beta": [
+    -2.1179039301310043,
+    -2.0357142857142856,
+    -1.8044444444444445
+   ],
+   "mean_std_applied_to_channels": "in image order, i.e. B,G,R",
+   "layout": "NCHW",
+   "thresh": 0.3,
+   "box_thresh": 0.6,
+   "unclip_ratio": 1.5,
+   "max_candidates": 3000,
+   "min_size": 3,
+   "score_mode": "fast",
+   "use_dilation": false,
+   "box_type": "quad",
+   "sort": "SortQuadBoxes: sort by (y0, x0), then bubble left-to-right when |dy| < 10"
+  },
+  "crop": {
+   "method": "CropByPolys quad: minAreaRect of int32 quad, perspective warp",
+   "interpolation": "cv2.INTER_CUBIC",
+   "border": "cv2.BORDER_REPLICATE",
+   "rotate_when_h_over_w_at_least": 1.5,
+   "rotation": "np.rot90 (counter-clockwise)"
+  },
+  "rec": {
+   "image_reader_format": "BGR",
+   "image_shape": [
+    3,
+    48,
+    320
+   ],
+   "max_width": 3200,
+   "interpolation": "cv2.INTER_LINEAR",
+   "normalize": "x / 255, then (x - 0.5) / 0.5",
+   "pad": "right, value 0.0 after normalisation",
+   "batch_size": 1,
+   "pipeline_default_batch_size": 6,
+   "batch_size_note": "batch 6 pads crops to the widest in the batch; scores moved by up to 0.025 on these fixtures (0.022 on form.png)",
+   "score_thresh": 0.0,
+   "decode": "CTC greedy: argmax per step, merge repeats, drop blank index 0",
+   "score": "mean of max probability over kept steps (0 if none)",
+   "dictionary_source": "PostProcess.character_dict in the rec yml",
+   "dictionary_entries_in_yml": 18708,
+   "space_appended": true,
+   "blank_prepended": true,
+   "class_count": 18710
+  }
+ },
+ "det_params_reported_by_pipeline": {
+  "limit_side_len": 64,
+  "limit_type": "min",
+  "thresh": 0.3,
+  "max_side_limit": 4000,
+  "box_thresh": 0.6,
+  "unclip_ratio": 1.5
+ },
+ "image_sha256": "e0b5a8e219169bf6da7e1b9453e5682155ece492ddd81ff92b65573dde65ccc7",
+ "image_reader": {
+  "call": "OpenCVImageReaderBackend: cv2.imdecode(file bytes, flags=1)",
+  "applies_exif_orientation": true,
+  "exif_orientation_tag": null
+ },
+ "lines": [
+  {
+   "text": "sex:v",
+   "score": 0.8138297200202942,
+   "det_score": 0.8530281322936599,
+   "quad": [
+    [
+     866,
+     0
+    ],
+    [
+     945,
+     0
+    ],
+    [
+     945,
+     26
+    ],
+    [
+     866,
+     26
+    ]
+   ]
+  },
+  {
+   "text": "nen Type IV barcode",
+   "score": 0.9300764203071594,
+   "det_score": 0.858281198101984,
+   "quad": [
+    [
+     1226,
+     20
+    ],
+    [
+     1378,
+     20
+    ],
+    [
+     1378,
+     40
+    ],
+    [
+     1226,
+     40
+    ]
+   ]
+  },
+  {
+   "text": "NEON011U3",
+   "score": 0.9471496939659119,
+   "det_score": 0.9258397297264784,
+   "quad": [
+    [
+     0,
+     36
+    ],
+    [
+     560,
+     26
+    ],
+    [
+     562,
+     167
+    ],
+    [
+     0,
+     177
+    ]
+   ]
+  },
+  {
+   "text": "Specics:SoREk trowbridgii",
+   "score": 0.944580078125,
+   "det_score": 0.7954762639330335,
+   "quad": [
+    [
+     867,
+     57
+    ],
+    [
+     1172,
+     44
+    ],
+    [
+     1174,
+     75
+    ],
+    [
+     868,
+     88
+    ]
+   ]
+  },
+  {
+   "text": "WREF.20190930.0001A820190930.√",
+   "score": 0.991358757019043,
+   "det_score": 0.7774008160934278,
+   "quad": [
+    [
+     866,
+     85
+    ],
+    [
+     1197,
+     75
+    ],
+    [
+     1197,
+     102
+    ],
+    [
+     867,
+     112
+    ]
+   ]
+  },
+  {
+   "text": "D00000028740",
+   "score": 0.9981184601783752,
+   "det_score": 0.8118756673695368,
+   "quad": [
+    [
+     1251,
+     99
+    ],
+    [
+     1358,
+     96
+    ],
+    [
+     1358,
+     115
+    ],
+    [
+     1251,
+     117
+    ]
+   ]
+  },
+  {
+   "text": "collected as part of the National Ecological",
+   "score": 0.9223480224609375,
+   "det_score": 0.6177421847316954,
+   "quad": [
+    [
+     863,
+     111
+    ],
+    [
+     1400,
+     108
+    ],
+    [
+     1400,
+     146
+    ],
+    [
+     863,
+     149
+    ]
+   ]
+  },
+  {
+   "text": "observntosy",
+   "score": 0.9498018622398376,
+   "det_score": 0.8283684887777366,
+   "quad": [
+    [
+     866,
+     142
+    ],
+    [
+     1015,
+     142
+    ],
+    [
+     1015,
+     170
+    ],
+    [
+     866,
+     170
+    ]
+   ]
+  },
+  {
+   "text": "'Network",
+   "score": 0.9511061906814575,
+   "det_score": 0.8076731428866171,
+   "quad": [
+    [
+     1018,
+     142
+    ],
+    [
+     1131,
+     140
+    ],
+    [
+     1132,
+     165
+    ],
+    [
+     1019,
+     167
+    ]
+   ]
+  },
+  {
+   "text": "METRIC 1",
+   "score": 0.965224027633667,
+   "det_score": 0.8415410076235903,
+   "quad": [
+    [
+     13,
+     732
+    ],
+    [
+     82,
+     732
+    ],
+    [
+     82,
+     753
+    ],
+    [
+     13,
+     753
+    ]
+   ]
+  },
+  {
+   "text": "6",
+   "score": 0.9994587302207947,
+   "det_score": 0.6255400593791689,
+   "quad": [
+    [
+     423,
+     732
+    ],
+    [
+     435,
+     732
+    ],
+    [
+     435,
+     747
+    ],
+    [
+     423,
+     747
+    ]
+   ]
+  },
+  {
+   "text": "8",
+   "score": 0.9998072981834412,
+   "det_score": 0.6369343653514788,
+   "quad": [
+    [
+     560,
+     731
+    ],
+    [
+     581,
+     731
+    ],
+    [
+     581,
+     749
+    ],
+    [
+     560,
+     749
+    ]
+   ]
+  },
+  {
+   "text": "110",
+   "score": 0.8718802332878113,
+   "det_score": 0.6282619330237217,
+   "quad": [
+    [
+     666,
+     730
+    ],
+    [
+     726,
+     730
+    ],
+    [
+     726,
+     752
+    ],
+    [
+     666,
+     752
+    ]
+   ]
+  },
+  {
+   "text": "13",
+   "score": 0.9994494915008545,
+   "det_score": 0.768051278492636,
+   "quad": [
+    [
+     897,
+     729
+    ],
+    [
+     941,
+     729
+    ],
+    [
+     941,
+     751
+    ],
+    [
+     897,
+     751
+    ]
+   ]
+  },
+  {
+   "text": "114",
+   "score": 0.8084995746612549,
+   "det_score": 0.6660564614261092,
+   "quad": [
+    [
+     949,
+     729
+    ],
+    [
+     1005,
+     729
+    ],
+    [
+     1005,
+     751
+    ],
+    [
+     949,
+     751
+    ]
+   ]
+  },
+  {
+   "text": "15",
+   "score": 0.9998100996017456,
+   "det_score": 0.770527303715547,
+   "quad": [
+    [
+     1040,
+     729
+    ],
+    [
+     1076,
+     729
+    ],
+    [
+     1076,
+     752
+    ],
+    [
+     1040,
+     752
+    ]
+   ]
+  },
+  {
+   "text": "INCCHES",
+   "score": 0.6934509873390198,
+   "det_score": 0.8199967810220999,
+   "quad": [
+    [
+     1030,
+     878
+    ],
+    [
+     1088,
+     878
+    ],
+    [
+     1088,
+     896
+    ],
+    [
+     1030,
+     896
+    ]
+   ]
+  }
+ ]
+}

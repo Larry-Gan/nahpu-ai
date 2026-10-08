@@ -1,0 +1,590 @@
+{
+ "fixture": "ocr11_plant_hieracium_scouleri_herbarium_printed_label.jpg",
+ "image_width": 1400,
+ "image_height": 2100,
+ "route": "paddleocr.PaddleOCR (paddlex OCR pipeline) with engine='onnxruntime' on the pinned ONNX files",
+ "packages": {
+  "python": "3.12.0",
+  "paddleocr": "3.7.0",
+  "paddlex": "3.7.2",
+  "onnxruntime": "1.30.0",
+  "numpy": "2.3.5",
+  "opencv-contrib-python": "4.10.0.84",
+  "pyclipper": "1.4.0",
+  "shapely": "2.1.2",
+  "pillow": "12.3.0",
+  "matplotlib": "3.11.2",
+  "paddlepaddle": null
+ },
+ "models": {
+  "dir_env": "NAHPU_MODEL_DIR",
+  "det": {
+   "name": "PP-OCRv6_small_det",
+   "onnx": "PP-OCRv6_small_det.onnx",
+   "onnx_sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+   "yml": "PP-OCRv6_small_det.yml",
+   "yml_sha256": "193f435274bf9f0b5f71a929bbfbcf148282df7e633b34e7c373e8f44741b516"
+  },
+  "rec": {
+   "name": "PP-OCRv6_small_rec",
+   "onnx": "PP-OCRv6_small_rec.onnx",
+   "onnx_sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+   "yml": "PP-OCRv6_small_rec.yml",
+   "yml_sha256": "ab078671bb49f06228eadccd34f1bb501e157f7a047095ffb943ba81512c77d1"
+  }
+ },
+ "params": {
+  "pipeline_image_reader_format": "BGR",
+  "use_doc_orientation_classify": false,
+  "use_doc_unwarping": false,
+  "use_textline_orientation": false,
+  "det": {
+   "image_reader_format": "BGR",
+   "resize": "DetResizeForTest type0",
+   "limit_side_len": 64,
+   "limit_type": "min",
+   "max_side_limit": 4000,
+   "resize_round": "python round() (half to even) of side/32, times 32, min 32",
+   "interpolation": "cv2.INTER_LINEAR",
+   "normalize_scale": "1./255.",
+   "normalize_mean": [
+    0.485,
+    0.456,
+    0.406
+   ],
+   "normalize_std": [
+    0.229,
+    0.224,
+    0.225
+   ],
+   "normalize_order": "hwc",
+   "normalize_alpha": [
+    0.017124753831663668,
+    0.01750700280112045,
+    0.017429193899782133
+   ],
+   "normalize_beta": [
+    -2.1179039301310043,
+    -2.0357142857142856,
+    -1.8044444444444445
+   ],
+   "mean_std_applied_to_channels": "in image order, i.e. B,G,R",
+   "layout": "NCHW",
+   "thresh": 0.3,
+   "box_thresh": 0.6,
+   "unclip_ratio": 1.5,
+   "max_candidates": 3000,
+   "min_size": 3,
+   "score_mode": "fast",
+   "use_dilation": false,
+   "box_type": "quad",
+   "sort": "SortQuadBoxes: sort by (y0, x0), then bubble left-to-right when |dy| < 10"
+  },
+  "crop": {
+   "method": "CropByPolys quad: minAreaRect of int32 quad, perspective warp",
+   "interpolation": "cv2.INTER_CUBIC",
+   "border": "cv2.BORDER_REPLICATE",
+   "rotate_when_h_over_w_at_least": 1.5,
+   "rotation": "np.rot90 (counter-clockwise)"
+  },
+  "rec": {
+   "image_reader_format": "BGR",
+   "image_shape": [
+    3,
+    48,
+    320
+   ],
+   "max_width": 3200,
+   "interpolation": "cv2.INTER_LINEAR",
+   "normalize": "x / 255, then (x - 0.5) / 0.5",
+   "pad": "right, value 0.0 after normalisation",
+   "batch_size": 1,
+   "pipeline_default_batch_size": 6,
+   "batch_size_note": "batch 6 pads crops to the widest in the batch; scores moved by up to 0.025 on these fixtures (0.022 on form.png)",
+   "score_thresh": 0.0,
+   "decode": "CTC greedy: argmax per step, merge repeats, drop blank index 0",
+   "score": "mean of max probability over kept steps (0 if none)",
+   "dictionary_source": "PostProcess.character_dict in the rec yml",
+   "dictionary_entries_in_yml": 18708,
+   "space_appended": true,
+   "blank_prepended": true,
+   "class_count": 18710
+  }
+ },
+ "det_params_reported_by_pipeline": {
+  "limit_side_len": 64,
+  "limit_type": "min",
+  "thresh": 0.3,
+  "max_side_limit": 4000,
+  "box_thresh": 0.6,
+  "unclip_ratio": 1.5
+ },
+ "image_sha256": "053a2be66c1998b8dee8f36ae21b80f2e80ee7122fe865f8ec9914e76dfd91e5",
+ "image_reader": {
+  "call": "OpenCVImageReaderBackend: cv2.imdecode(file bytes, flags=1)",
+  "applies_exif_orientation": true,
+  "exif_orientation_tag": null
+ },
+ "lines": [
+  {
+   "text": "ASU",
+   "score": 0.9731059074401855,
+   "det_score": 0.9057686702440713,
+   "quad": [
+    [
+     518,
+     46
+    ],
+    [
+     697,
+     46
+    ],
+    [
+     697,
+     139
+    ],
+    [
+     518,
+     139
+    ]
+   ]
+  },
+  {
+   "text": "9",
+   "score": 0.9994736313819885,
+   "det_score": 0.6615298449993133,
+   "quad": [
+    [
+     452,
+     92
+    ],
+    [
+     469,
+     92
+    ],
+    [
+     469,
+     110
+    ],
+    [
+     452,
+     110
+    ]
+   ]
+  },
+  {
+   "text": "10",
+   "score": 0.9998818635940552,
+   "det_score": 0.6829467319390353,
+   "quad": [
+    [
+     492,
+     93
+    ],
+    [
+     516,
+     93
+    ],
+    [
+     516,
+     110
+    ],
+    [
+     492,
+     110
+    ]
+   ]
+  },
+  {
+   "text": "cm",
+   "score": 0.9999034404754639,
+   "det_score": 0.8944607563316822,
+   "quad": [
+    [
+     53,
+     132
+    ],
+    [
+     91,
+     132
+    ],
+    [
+     91,
+     155
+    ],
+    [
+     53,
+     155
+    ]
+   ]
+  },
+  {
+   "text": "copyright reserved",
+   "score": 0.9928810596466064,
+   "det_score": 0.8489171458230009,
+   "quad": [
+    [
+     290,
+     128
+    ],
+    [
+     510,
+     128
+    ],
+    [
+     510,
+     157
+    ],
+    [
+     290,
+     157
+    ]
+   ]
+  },
+  {
+   "text": "neen",
+   "score": 0.8535054922103882,
+   "det_score": 0.6144901425888141,
+   "quad": [
+    [
+     1170,
+     178
+    ],
+    [
+     1215,
+     178
+    ],
+    [
+     1215,
+     189
+    ],
+    [
+     1170,
+     189
+    ]
+   ]
+  },
+  {
+   "text": "Type Il barcode",
+   "score": 0.9647918343544006,
+   "det_score": 0.6315548253261437,
+   "quad": [
+    [
+     1242,
+     179
+    ],
+    [
+     1306,
+     179
+    ],
+    [
+     1306,
+     189
+    ],
+    [
+     1242,
+     189
+    ]
+   ]
+  },
+  {
+   "text": "B00000053749",
+   "score": 0.9979724884033203,
+   "det_score": 0.7950632933837671,
+   "quad": [
+    [
+     1206,
+     230
+    ],
+    [
+     1275,
+     230
+    ],
+    [
+     1275,
+     241
+    ],
+    [
+     1206,
+     241
+    ]
+   ]
+  },
+  {
+   "text": "Plants of NEON Domain D16 — Pacific Northwest",
+   "score": 0.9862191081047058,
+   "det_score": 0.8010835175115117,
+   "quad": [
+    [
+     969,
+     1769
+    ],
+    [
+     1342,
+     1765
+    ],
+    [
+     1342,
+     1782
+    ],
+    [
+     970,
+     1786
+    ]
+   ]
+  },
+  {
+   "text": "Asteraceae",
+   "score": 0.9951282739639282,
+   "det_score": 0.8587016168755794,
+   "quad": [
+    [
+     968,
+     1803
+    ],
+    [
+     1048,
+     1803
+    ],
+    [
+     1048,
+     1817
+    ],
+    [
+     968,
+     1817
+    ]
+   ]
+  },
+  {
+   "text": "Hieraċium scouleri Hook.",
+   "score": 0.9717674255371094,
+   "det_score": 0.846020032563914,
+   "quad": [
+    [
+     967,
+     1825
+    ],
+    [
+     1144,
+     1821
+    ],
+    [
+     1145,
+     1840
+    ],
+    [
+     968,
+     1844
+    ]
+   ]
+  },
+  {
+   "text": "United States, Washington, Clark County. Abby Road Site,",
+   "score": 0.9851601719856262,
+   "det_score": 0.794542117471449,
+   "quad": [
+    [
+     966,
+     1850
+    ],
+    [
+     1342,
+     1846
+    ],
+    [
+     1342,
+     1863
+    ],
+    [
+     967,
+     1867
+    ]
+   ]
+  },
+  {
+   "text": "45.7451 N -122.3830 W. WGS84. 480.26 m.",
+   "score": 0.9873006939888,
+   "det_score": 0.7291946758672522,
+   "quad": [
+    [
+     966,
+     1867
+    ],
+    [
+     1240,
+     1864
+    ],
+    [
+     1240,
+     1882
+    ],
+    [
+     967,
+     1885
+    ]
+   ]
+  },
+  {
+   "text": "Gravel road within young forest stand.With Pseudotsuga",
+   "score": 0.9975133538246155,
+   "det_score": 0.7328283421239508,
+   "quad": [
+    [
+     966,
+     1893
+    ],
+    [
+     1325,
+     1889
+    ],
+    [
+     1325,
+     1906
+    ],
+    [
+     967,
+     1910
+    ]
+   ]
+  },
+  {
+   "text": "menziesii var. menziesii, Hypochaeris radicata, Polystichum",
+   "score": 0.9909684658050537,
+   "det_score": 0.8037102479860321,
+   "quad": [
+    [
+     965,
+     1911
+    ],
+    [
+     1344,
+     1907
+    ],
+    [
+     1344,
+     1924
+    ],
+    [
+     966,
+     1928
+    ]
+   ]
+  },
+  {
+   "text": "munitum.",
+   "score": 0.9963091611862183,
+   "det_score": 0.873768435144911,
+   "quad": [
+    [
+     967,
+     1930
+    ],
+    [
+     1030,
+     1930
+    ],
+    [
+     1030,
+     1944
+    ],
+    [
+     967,
+     1944
+    ]
+   ]
+  },
+  {
+   "text": "H.Spencer",
+   "score": 0.9998267292976379,
+   "det_score": 0.8976119884873851,
+   "quad": [
+    [
+     965,
+     1953
+    ],
+    [
+     1033,
+     1953
+    ],
+    [
+     1033,
+     1970
+    ],
+    [
+     965,
+     1970
+    ]
+   ]
+  },
+  {
+   "text": "014",
+   "score": 0.9999618530273438,
+   "det_score": 0.8681084626599361,
+   "quad": [
+    [
+     1069,
+     1951
+    ],
+    [
+     1096,
+     1951
+    ],
+    [
+     1096,
+     1969
+    ],
+    [
+     1069,
+     1969
+    ]
+   ]
+  },
+  {
+   "text": "2019-06-19",
+   "score": 0.9999234080314636,
+   "det_score": 0.8963829738786444,
+   "quad": [
+    [
+     1274,
+     1949
+    ],
+    [
+     1346,
+     1949
+    ],
+    [
+     1346,
+     1966
+    ],
+    [
+     1274,
+     1966
+    ]
+   ]
+  },
+  {
+   "text": "Collected as part of the National Ecological Observatory Network",
+   "score": 0.9873969554901123,
+   "det_score": 0.7232326058320713,
+   "quad": [
+    [
+     965,
+     1987
+    ],
+    [
+     1345,
+     1985
+    ],
+    [
+     1345,
+     2003
+    ],
+    [
+     966,
+     2005
+    ]
+   ]
+  }
+ ]
+}
