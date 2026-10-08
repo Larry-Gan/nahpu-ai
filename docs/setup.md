@@ -12,6 +12,9 @@
 Nothing else. No Python, no system BLAS, no CUDA toolkit, no C++ build of ONNX
 Runtime.
 
+Python is optional: it regenerates test data, exports BioCLIP and fetches the
+NEON test set (see the [README](../README.md)).
+
 ## First build
 
 ```sh
@@ -31,9 +34,14 @@ If you see that, your toolchain works.
 ## Getting weights
 
 ```sh
-./scripts/fetch-model.sh            # all models
+./scripts/fetch-model.sh            # all models and test photos
 ./scripts/fetch-model.sh --help     # list them
+./scripts/fetch-model.sh nomic-embed-text-v1_5 nomic-embed-vision-v1_5   # every file of these models
 ```
+
+The Nomic models (about 550 MB and 370 MB) embed text and images into one
+space. Try them with `cargo run --bin cli -- compare <image file or text>...`,
+which prints the cosine similarity of every pair.
 
 Files land in `models/` and are gitignored. Each download is checksummed. A
 model whose checksum is recorded as `-` is not pinned yet; the script prints the

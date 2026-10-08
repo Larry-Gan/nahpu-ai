@@ -3,7 +3,7 @@ mod models;
 
 use models::OnnxModel;
 
-const MODELS: [OnnxModel; 5] = [
+const MODELS: [OnnxModel; 7] = [
     OnnxModel {
         stem: "all-MiniLM-L6-v2",
         cfg: "has_minilm",
@@ -28,6 +28,16 @@ const MODELS: [OnnxModel; 5] = [
         stem: "bioclip-vision",
         cfg: "has_bioclip_vision",
         weights_env: "BIOCLIP_VISION_WEIGHTS",
+    },
+    OnnxModel {
+        stem: "nomic-embed-text-v1_5",
+        cfg: "has_nomic_text",
+        weights_env: "NOMIC_TEXT_WEIGHTS",
+    },
+    OnnxModel {
+        stem: "nomic-embed-vision-v1_5",
+        cfg: "has_nomic_vision",
+        weights_env: "NOMIC_VISION_WEIGHTS",
     },
 ];
 

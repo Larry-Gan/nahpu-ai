@@ -125,6 +125,31 @@ their zero-shot scores.
 `nahpu_embed_core` is the extension point. Add an engine by implementing
 `TextEmbedder` or `ImageEmbedder`; nothing else has to change.
 
+## Models
+
+| Model | What |
+|---|---|
+| `all-MiniLM-L6-v2` | Text, 384 dimensions. |
+| `jina-clip-v1` | Text and images in one space, 768 dimensions. Zero-shot classification. |
+| `bioclip` | Text and images in one space, 512 dimensions. Exported, not fetched (above). |
+| `nomic-embed-text-v1_5` | Text, 768 dimensions, in the same space as the vision model. |
+| `nomic-embed-vision-v1_5` | Images, 768 dimensions, so a text query finds an image. |
+
+`./scripts/fetch-model.sh <model>` fetches one model. With no argument it
+fetches every model and the test photos.
+
+Compare text and images by hand with Nomic. This scores one query against two
+of the test photos:
+
+```sh
+cd rust && cargo run --bin cli -- compare "a photo of a beetle" \
+    ../models/emb01_beetle_chlaenius_aestivus_dorsal.jpg \
+    ../models/emb10_mammal_peromyscus_ventral.jpg
+```
+
+It prints the cosine of every pair. The query scores highest with the beetle
+photo.
+
 ## Backends
 
 CPU is `burn-flex`, pure Rust with SIMD. It needs no system BLAS and no per-OS

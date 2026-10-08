@@ -17,6 +17,7 @@ anyhow = "1"
 nahpu_embed_core = { path = "crates/nahpu_embed_core" }
 nahpu_embed_burn = { path = "crates/nahpu_embed_burn" }
 burn = { version = "0.22.0", default-features = false, features = ["std"] }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp", "tiff", "bmp", "gif"] }
 
 # Unoptimised tensor kernels make debug runs unusably slow (47x here), while our
 # own crates stay debuggable.
