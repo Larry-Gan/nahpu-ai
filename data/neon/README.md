@@ -37,6 +37,9 @@ scripts/neon/.venv/bin/python -I scripts/neon/fetch_dataset.py --smoke   # 5 per
 scripts/neon/.venv/bin/python -I scripts/neon/fetch_dataset.py --verify  # re-hash
 ```
 
+On Windows, run `python` instead of `python3` and use `.venv/Scripts/` instead
+of `.venv/bin/`.
+
 The script fetches the images listed in `manifest.csv`, one at a time with a
 1 second gap. A full fetch takes about 14 minutes and uses about 33 MB. Files that already match
 the manifest are skipped. `--verify` exits non-zero if any file is missing or

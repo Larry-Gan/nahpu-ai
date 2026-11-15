@@ -1,0 +1,4 @@
+# scripts/neon/fetch_dataset.py writes these with LF on every platform; without
+# this, a Windows checkout (CRLF) shows them as modified after each run.
+/data/neon/*.csv text eol=lf
+/eval/neon-labels.csv text eol=lf
