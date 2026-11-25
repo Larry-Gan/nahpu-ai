@@ -1,5 +1,6 @@
 mod embed;
 mod eval;
+mod ocr_eval;
 mod photos;
 
 use std::path::{Path, PathBuf};
@@ -74,6 +75,17 @@ enum Command {
     },
     /// Print the text lines in an image, in reading order.
     Ocr { image: PathBuf },
+    /// Read label photos, compare the text with PaddleOCR's and write metrics.json and report.md.
+    OcrEval {
+        /// Folder of `*.reference.json` files from scripts/ocr/make_references.py.
+        #[arg(long)]
+        references: PathBuf,
+        /// Folder holding the photos those files name.
+        #[arg(long)]
+        photos: PathBuf,
+        #[arg(long)]
+        out: PathBuf,
+    },
 }
 
 #[derive(Args)]
@@ -168,6 +180,9 @@ fn main() -> Result<()> {
         }),
         Some(Command::Compare { items }) => compare_items(&items),
         Some(Command::Ocr { image }) => read_text(&image),
+        Some(Command::OcrEval { references, photos, out }) => {
+            ocr_eval::run(&ocr_eval::OcrEvalPlan { references, photos, out })
+        }
     }
 }
 

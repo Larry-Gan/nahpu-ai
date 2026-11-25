@@ -83,7 +83,12 @@ much picking the best setting flatters the score, run the sweep, then
 `python3 scripts/reference/held_out.py data/neon/manifest.csv eval/results/bioclip`
 from the repo root.
 
+Nomic v1.5 is scored the same way, with `--model nomic-embed-v1.5`. Nomic
+publishes no logit scale, so the `p` that `classify` prints for it is not
+calibrated. The ranking does not depend on it.
+
 Current results: [BioCLIP](eval/results/bioclip/report.md) 86.9%,
+[Nomic v1.5](eval/results/nomic-embed-v1.5/report.md) 74.0%,
 [jina-clip-v1](eval/results/jina-clip-v1/report.md) 66.1%.
 
 ### Clustering
@@ -97,22 +102,42 @@ cd rust && cargo run --release --features metal --bin cli -- embed \
     --manifest ../data/neon/manifest.csv --out ../eval/embeddings/bioclip
 ```
 
-For jina, use `--model jina-clip-v1 --prompts ensemble`. Then, from the repo root:
+For jina, use `--model jina-clip-v1 --prompts ensemble`. For Nomic, use
+`--model nomic-embed-v1.5 --prompts photo --wording both`. Then, from the repo
+root:
 
 ```sh
 python3 -m venv scripts/analysis/.venv
 scripts/analysis/.venv/bin/pip install -r scripts/analysis/requirements.txt
 scripts/analysis/.venv/bin/python -I scripts/analysis/check_embeddings.py eval/embeddings/bioclip eval/results/bioclip
 scripts/analysis/.venv/bin/python -I scripts/analysis/cluster.py data/neon/manifest.csv \
-    eval/results/clustering eval/embeddings/bioclip eval/embeddings/jina-clip-v1
+    eval/results/clustering eval/embeddings/bioclip eval/embeddings/jina-clip-v1 \
+    eval/embeddings/nomic-embed-v1.5
 ```
 
 `check_embeddings.py` scores zero-shot from the saved files. It must match
 `cli eval`, which shows each row belongs to the right photo.
 
 Current results: [clustering report](eval/results/clustering/report.md). With
-one nearest labelled photo, BioCLIP gets 97.9% and jina 85.6%. Both beat
-their zero-shot scores.
+one nearest labelled photo, BioCLIP gets 97.9%, Nomic 90.3% and jina 85.6%.
+All three beat their zero-shot scores.
+
+### OCR
+
+There is no transcribed test set for OCR yet. This compares the text read on
+four NEON label photos with what PaddleOCR read on the same photos:
+
+```sh
+cd rust && cargo run --bin cli -- ocr-eval \
+    --references crates/nahpu_ocr_burn/tests/data/neon \
+    --photos ../models --out ../eval/results/pp-ocrv6-small
+```
+
+`scripts/fetch-model.sh` fetches the photos into `models/`. The report lists
+what was read on each photo and the lines that differ from PaddleOCR's.
+
+Current results: [OCR report](eval/results/pp-ocrv6-small/report.md). The
+character error rate against PaddleOCR is 1.0% to 1.5% on the four photos.
 
 ## Crates
 

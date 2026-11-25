@@ -4,6 +4,10 @@
 use anyhow::Result;
 use nahpu_embed_core::{ImageEmbedder, TextEmbedder};
 
+/// Nomic publishes no logit scale, so this is the upper limit CLIP trains
+/// with. Ranking does not use it. The probabilities it gives are not calibrated.
+pub const NOMIC_LOGIT_SCALE: f32 = 100.0;
+
 #[allow(dead_code)]
 const DIMENSIONS: usize = 768;
 /// The published recipe's limit; the tokenizer file sets none.
