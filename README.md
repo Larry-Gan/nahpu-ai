@@ -120,10 +120,47 @@ their zero-shot scores.
 |---|---|
 | `nahpu_embed_core` | Traits and helpers. No framework dependency. |
 | `nahpu_embed_burn` | Burn engines. Backend picked by cargo feature. |
+| `nahpu_burn_support` | What the Burn crates share: the device for the chosen backend, weight loading. |
+| `nahpu_ocr_burn` | PP-OCRv6 text reading on Burn: the lines in an image, in reading order. |
 | `cli` | Scratch binary for trying things by hand. |
 
 `nahpu_embed_core` is the extension point. Add an engine by implementing
 `TextEmbedder` or `ImageEmbedder`; nothing else has to change.
+
+## Models
+
+| Model | What |
+|---|---|
+| `all-MiniLM-L6-v2` | Text, 384 dimensions. |
+| `jina-clip-v1` | Text and images in one space, 768 dimensions. Zero-shot classification. |
+| `bioclip` | Text and images in one space, 512 dimensions. Exported, not fetched (above). |
+| `nomic-embed-text-v1_5` | Text, 768 dimensions, in the same space as the vision model. |
+| `nomic-embed-vision-v1_5` | Images, 768 dimensions, so a text query finds an image. |
+| `PP-OCRv6_small_det` | Finds the text lines in an image. |
+| `PP-OCRv6_small_rec` | Reads each line; its `.yml` holds the character dictionary. |
+
+`./scripts/fetch-model.sh <model>` fetches one model. With no argument it
+fetches every model and the test photos.
+
+Compare text and images by hand with Nomic. This scores one query against two
+of the test photos:
+
+```sh
+cd rust && cargo run --bin cli -- compare "a photo of a beetle" \
+    ../models/emb01_beetle_chlaenius_aestivus_dorsal.jpg \
+    ../models/emb10_mammal_peromyscus_ventral.jpg
+```
+
+It prints the cosine of every pair. The query scores highest with the beetle
+photo.
+
+Read the text in an image, in reading order:
+
+```sh
+cd rust && cargo run --bin cli -- ocr crates/nahpu_ocr_burn/tests/data/form.png
+```
+
+Formats and known limits are in [Setup](docs/setup.md#reading-text).
 
 ## Backends
 

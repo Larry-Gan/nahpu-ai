@@ -31,7 +31,7 @@ mod text {
     use nahpu_embed_core::{normalise_to_unit_length, Embedding, TextRole};
     use tokenizers::{PaddingParams, PaddingStrategy, Tokenizer, TruncationParams};
 
-    use crate::{SelectedBackend, BACKEND_NAME};
+    use crate::BACKEND_NAME;
 
     #[allow(clippy::all, clippy::pedantic, dead_code)]
     mod model {
@@ -39,15 +39,15 @@ mod text {
     }
 
     pub struct JinaText {
-        model: model::Model<SelectedBackend>,
+        model: model::Model,
         tokenizer: Tokenizer,
-        device: Device<SelectedBackend>,
+        device: Device,
         name: String,
     }
 
     impl JinaText {
         pub fn load() -> Result<Self> {
-            let device = Default::default();
+            let device = crate::selected_device();
             let weights = crate::read_weights(env!("JINA_TEXT_WEIGHTS"))?;
 
             Ok(Self {
@@ -109,7 +109,7 @@ mod text {
                 return Ok(Vec::new());
             }
             let (ids, shape) = self.token_ids(texts)?;
-            let input_ids = Tensor::<SelectedBackend, 2, Int>::from_data(TensorData::new(ids, shape), &self.device);
+            let input_ids = Tensor::<2, Int>::from_data(TensorData::new(ids, shape), &self.device);
 
             let output = self.model.forward(input_ids);
             Ok(crate::rows_of(output).into_iter().map(normalise_to_unit_length).collect())
@@ -124,7 +124,7 @@ mod vision {
     use burn::prelude::*;
     use nahpu_embed_core::{normalise_to_unit_length, Embedding, PreprocessConfig};
 
-    use crate::{SelectedBackend, BACKEND_NAME};
+    use crate::BACKEND_NAME;
 
     #[allow(clippy::all, clippy::pedantic, dead_code)]
     mod model {
@@ -132,14 +132,14 @@ mod vision {
     }
 
     pub struct JinaVision {
-        model: model::Model<SelectedBackend>,
-        device: Device<SelectedBackend>,
+        model: model::Model,
+        device: Device,
         name: String,
     }
 
     impl JinaVision {
         pub fn load() -> Result<Self> {
-            let device = Default::default();
+            let device = crate::selected_device();
             let weights = crate::read_weights(env!("JINA_VISION_WEIGHTS"))?;
 
             Ok(Self {
@@ -170,7 +170,7 @@ mod vision {
                 "expected a 3x{size}x{size} tensor, got {} values",
                 pixels.len()
             );
-            let input = Tensor::<SelectedBackend, 4>::from_data(
+            let input = Tensor::<4>::from_data(
                 TensorData::new(pixels.to_vec(), [1, 3, size, size]),
                 &self.device,
             );

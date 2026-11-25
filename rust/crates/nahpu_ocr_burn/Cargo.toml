@@ -1,0 +1,29 @@
+[package]
+name = "nahpu_ocr_burn"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+repository.workspace = true
+description = "PP-OCRv6 text reading on Burn for NAHPU AI experiments."
+
+[features]
+default = ["flex"]
+flex = ["nahpu_burn_support/flex"]
+wgpu = ["nahpu_burn_support/wgpu"]
+metal = ["nahpu_burn_support/metal"]
+vulkan = ["nahpu_burn_support/vulkan"]
+
+[dependencies]
+nahpu_embed_core.workspace = true
+nahpu_burn_support.workspace = true
+anyhow.workspace = true
+burn.workspace = true
+burn-store = "0.22.0"
+image.workspace = true
+imageproc.workspace = true
+
+[build-dependencies]
+burn-onnx = "0.22.0"
+
+[dev-dependencies]
+serde_json = "1"

@@ -3,6 +3,8 @@ resolver = "2"
 members = [
     "crates/nahpu_embed_core",
     "crates/nahpu_embed_burn",
+    "crates/nahpu_burn_support",
+    "crates/nahpu_ocr_burn",
     "cli",
 ]
 
@@ -16,9 +18,21 @@ repository = "https://github.com/nahpu/nahpu-ai"
 anyhow = "1"
 nahpu_embed_core = { path = "crates/nahpu_embed_core" }
 nahpu_embed_burn = { path = "crates/nahpu_embed_burn" }
-burn = { version = "0.21", default-features = false, features = ["std"] }
+nahpu_ocr_burn = { path = "crates/nahpu_ocr_burn" }
+nahpu_burn_support = { path = "crates/nahpu_burn_support", default-features = false }
+burn = { version = "0.22.0", default-features = false, features = ["std"] }
+image = { version = "0.25", default-features = false, features = ["jpeg", "png", "webp", "tiff", "bmp", "gif"] }
+# Without default features: no rayon, no text drawing (ab_glyph), no FFT.
+imageproc = { version = "0.27", default-features = false }
 
 # Unoptimised tensor kernels make debug runs unusably slow (47x here), while our
 # own crates stay debuggable.
 [profile.dev.package."*"]
 opt-level = 3
+# Without debug info, `cargo check` (and rust-analyzer) shares the build
+# script's output with `cargo build` instead of importing every model again.
+debug = false
+
+# At opt-level 0 this crate's tests take about a third longer.
+[profile.dev.package.nahpu_ocr_burn]
+opt-level = 1

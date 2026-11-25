@@ -1,0 +1,500 @@
+{
+ "fixture": "form.png",
+ "image_width": 1168,
+ "image_height": 680,
+ "route": "paddleocr.PaddleOCR (paddlex OCR pipeline) with engine='onnxruntime' on the pinned ONNX files",
+ "packages": {
+  "python": "3.12.0",
+  "paddleocr": "3.7.0",
+  "paddlex": "3.7.2",
+  "onnxruntime": "1.30.0",
+  "numpy": "2.3.5",
+  "opencv-contrib-python": "4.10.0.84",
+  "pyclipper": "1.4.0",
+  "shapely": "2.1.2",
+  "pillow": "12.3.0",
+  "matplotlib": "3.11.2",
+  "paddlepaddle": null
+ },
+ "models": {
+  "dir_env": "NAHPU_MODEL_DIR",
+  "det": {
+   "name": "PP-OCRv6_small_det",
+   "onnx": "PP-OCRv6_small_det.onnx",
+   "onnx_sha256": "d73e0058b7a8086bbd57f3d10b8bcd4ff95363f67e06e2762b5e814fe9c9410e",
+   "yml": "PP-OCRv6_small_det.yml",
+   "yml_sha256": "193f435274bf9f0b5f71a929bbfbcf148282df7e633b34e7c373e8f44741b516"
+  },
+  "rec": {
+   "name": "PP-OCRv6_small_rec",
+   "onnx": "PP-OCRv6_small_rec.onnx",
+   "onnx_sha256": "5435fd747c9e0efe15a96d0b378d5bd157e9492ed8fd80edf08f30d02fa24634",
+   "yml": "PP-OCRv6_small_rec.yml",
+   "yml_sha256": "ab078671bb49f06228eadccd34f1bb501e157f7a047095ffb943ba81512c77d1"
+  }
+ },
+ "params": {
+  "pipeline_image_reader_format": "BGR",
+  "use_doc_orientation_classify": false,
+  "use_doc_unwarping": false,
+  "use_textline_orientation": false,
+  "det": {
+   "image_reader_format": "BGR",
+   "resize": "DetResizeForTest type0",
+   "limit_side_len": 64,
+   "limit_type": "min",
+   "max_side_limit": 4000,
+   "resize_round": "python round() (half to even) of side/32, times 32, min 32",
+   "interpolation": "cv2.INTER_LINEAR",
+   "normalize_scale": "1./255.",
+   "normalize_mean": [
+    0.485,
+    0.456,
+    0.406
+   ],
+   "normalize_std": [
+    0.229,
+    0.224,
+    0.225
+   ],
+   "normalize_order": "hwc",
+   "normalize_alpha": [
+    0.017124753831663668,
+    0.01750700280112045,
+    0.017429193899782133
+   ],
+   "normalize_beta": [
+    -2.1179039301310043,
+    -2.0357142857142856,
+    -1.8044444444444445
+   ],
+   "mean_std_applied_to_channels": "in image order, i.e. B,G,R",
+   "layout": "NCHW",
+   "thresh": 0.3,
+   "box_thresh": 0.6,
+   "unclip_ratio": 1.5,
+   "max_candidates": 3000,
+   "min_size": 3,
+   "score_mode": "fast",
+   "use_dilation": false,
+   "box_type": "quad",
+   "sort": "SortQuadBoxes: sort by (y0, x0), then bubble left-to-right when |dy| < 10"
+  },
+  "crop": {
+   "method": "CropByPolys quad: minAreaRect of int32 quad, perspective warp",
+   "interpolation": "cv2.INTER_CUBIC",
+   "border": "cv2.BORDER_REPLICATE",
+   "rotate_when_h_over_w_at_least": 1.5,
+   "rotation": "np.rot90 (counter-clockwise)"
+  },
+  "rec": {
+   "image_reader_format": "BGR",
+   "image_shape": [
+    3,
+    48,
+    320
+   ],
+   "max_width": 3200,
+   "interpolation": "cv2.INTER_LINEAR",
+   "normalize": "x / 255, then (x - 0.5) / 0.5",
+   "pad": "right, value 0.0 after normalisation",
+   "batch_size": 1,
+   "pipeline_default_batch_size": 6,
+   "batch_size_note": "batch 6 pads crops to the widest in the batch; scores moved by up to 0.025 on these fixtures (0.022 on form.png)",
+   "score_thresh": 0.0,
+   "decode": "CTC greedy: argmax per step, merge repeats, drop blank index 0",
+   "score": "mean of max probability over kept steps (0 if none)",
+   "dictionary_source": "PostProcess.character_dict in the rec yml",
+   "dictionary_entries_in_yml": 18708,
+   "space_appended": true,
+   "blank_prepended": true,
+   "class_count": 18710
+  }
+ },
+ "det_params_reported_by_pipeline": {
+  "limit_side_len": 64,
+  "limit_type": "min",
+  "thresh": 0.3,
+  "max_side_limit": 4000,
+  "box_thresh": 0.6,
+  "unclip_ratio": 1.5
+ },
+ "check": {
+  "expected_line_count": 16,
+  "detected_line_count": 16,
+  "same_set_of_lines": true,
+  "missing": [],
+  "unexpected": [],
+  "pipeline_order_equals_reading_order": true
+ },
+ "lines": [
+  {
+   "text": "Catalogue No:",
+   "score": 0.976668119430542,
+   "det_score": 0.8772865551577501,
+   "quad": [
+    [
+     59,
+     71
+    ],
+    [
+     272,
+     71
+    ],
+    [
+     272,
+     106
+    ],
+    [
+     59,
+     106
+    ]
+   ]
+  },
+  {
+   "text": "NHM 47291",
+   "score": 0.9988431930541992,
+   "det_score": 0.881032617874656,
+   "quad": [
+    [
+     417,
+     70
+    ],
+    [
+     596,
+     68
+    ],
+    [
+     596,
+     102
+    ],
+    [
+     417,
+     104
+    ]
+   ]
+  },
+  {
+   "text": "Species:",
+   "score": 0.9999373555183411,
+   "det_score": 0.930523605537749,
+   "quad": [
+    [
+     57,
+     143
+    ],
+    [
+     187,
+     143
+    ],
+    [
+     187,
+     179
+    ],
+    [
+     57,
+     179
+    ]
+   ]
+  },
+  {
+   "text": "Sundamys muelleri",
+   "score": 0.9874618649482727,
+   "det_score": 0.8641551003239372,
+   "quad": [
+    [
+     418,
+     141
+    ],
+    [
+     708,
+     143
+    ],
+    [
+     708,
+     178
+    ],
+    [
+     418,
+     176
+    ]
+   ]
+  },
+  {
+   "text": "Sex:",
+   "score": 0.9983782768249512,
+   "det_score": 0.9179807542911116,
+   "quad": [
+    [
+     55,
+     214
+    ],
+    [
+     128,
+     214
+    ],
+    [
+     128,
+     253
+    ],
+    [
+     55,
+     253
+    ]
+   ]
+  },
+  {
+   "text": "Male",
+   "score": 0.9999736547470093,
+   "det_score": 0.957885893173313,
+   "quad": [
+    [
+     416,
+     212
+    ],
+    [
+     494,
+     212
+    ],
+    [
+     494,
+     251
+    ],
+    [
+     416,
+     251
+    ]
+   ]
+  },
+  {
+   "text": "Locality:",
+   "score": 0.9999727606773376,
+   "det_score": 0.8793406817800045,
+   "quad": [
+    [
+     55,
+     284
+    ],
+    [
+     187,
+     284
+    ],
+    [
+     187,
+     324
+    ],
+    [
+     55,
+     324
+    ]
+   ]
+  },
+  {
+   "text": "Kinabalu Park, Sabah, near Layang Layang",
+   "score": 0.9877632260322571,
+   "det_score": 0.8360272788028609,
+   "quad": [
+    [
+     418,
+     284
+    ],
+    [
+     1063,
+     287
+    ],
+    [
+     1062,
+     325
+    ],
+    [
+     418,
+     322
+    ]
+   ]
+  },
+  {
+   "text": "Date:",
+   "score": 0.9999681711196899,
+   "det_score": 0.8891208950016234,
+   "quad": [
+    [
+     57,
+     355
+    ],
+    [
+     144,
+     358
+    ],
+    [
+     143,
+     396
+    ],
+    [
+     55,
+     393
+    ]
+   ]
+  },
+  {
+   "text": "12 June 2019",
+   "score": 0.9970813393592834,
+   "det_score": 0.8817780638608432,
+   "quad": [
+    [
+     417,
+     357
+    ],
+    [
+     620,
+     355
+    ],
+    [
+     621,
+     394
+    ],
+    [
+     417,
+     396
+    ]
+   ]
+  },
+  {
+   "text": "Collector:",
+   "score": 0.9999768137931824,
+   "det_score": 0.8752691400295589,
+   "quad": [
+    [
+     57,
+     428
+    ],
+    [
+     203,
+     430
+    ],
+    [
+     202,
+     467
+    ],
+    [
+     57,
+     464
+    ]
+   ]
+  },
+  {
+   "text": "A. Tan",
+   "score": 0.9947071671485901,
+   "det_score": 0.9683305410136451,
+   "quad": [
+    [
+     416,
+     430
+    ],
+    [
+     518,
+     430
+    ],
+    [
+     518,
+     466
+    ],
+    [
+     416,
+     466
+    ]
+   ]
+  },
+  {
+   "text": "Weight:",
+   "score": 0.9869380593299866,
+   "det_score": 0.9210057180788782,
+   "quad": [
+    [
+     56,
+     501
+    ],
+    [
+     178,
+     501
+    ],
+    [
+     178,
+     540
+    ],
+    [
+     56,
+     540
+    ]
+   ]
+  },
+  {
+   "text": "84 g",
+   "score": 0.9867215752601624,
+   "det_score": 0.8868933356176655,
+   "quad": [
+    [
+     415,
+     497
+    ],
+    [
+     493,
+     500
+    ],
+    [
+     492,
+     545
+    ],
+    [
+     413,
+     542
+    ]
+   ]
+  },
+  {
+   "text": "Preparation:",
+   "score": 0.9999058246612549,
+   "det_score": 0.9165344670384452,
+   "quad": [
+    [
+     57,
+     575
+    ],
+    [
+     241,
+     575
+    ],
+    [
+     241,
+     609
+    ],
+    [
+     57,
+     609
+    ]
+   ]
+  },
+  {
+   "text": "Skin and skull",
+   "score": 0.9930433034896851,
+   "det_score": 0.907770907730921,
+   "quad": [
+    [
+     419,
+     575
+    ],
+    [
+     629,
+     575
+    ],
+    [
+     629,
+     609
+    ],
+    [
+     419,
+     609
+    ]
+   ]
+  }
+ ]
+}

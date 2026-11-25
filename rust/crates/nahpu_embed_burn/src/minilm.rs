@@ -26,18 +26,18 @@ mod with_model {
     use tokenizers::Tokenizer;
 
     use super::model::Model;
-    use crate::{SelectedBackend, BACKEND_NAME};
+    use crate::BACKEND_NAME;
 
     pub struct MiniLm {
-        model: Model<SelectedBackend>,
+        model: Model,
         tokenizer: Tokenizer,
-        device: Device<SelectedBackend>,
+        device: Device,
         name: String,
     }
 
     impl MiniLm {
         pub fn load() -> Result<Self> {
-            let device = Default::default();
+            let device = crate::selected_device();
             let weights = crate::read_weights(env!("MINILM_WEIGHTS"))?;
 
             Ok(Self {
@@ -63,7 +63,7 @@ mod with_model {
             Ok((ids, mask))
         }
 
-        fn run_forward(&self, ids: &[i64], mask: &[i64]) -> Tensor<SelectedBackend, 3> {
+        fn run_forward(&self, ids: &[i64], mask: &[i64]) -> Tensor<3> {
             let shape = [1, ids.len()];
             let input_ids = self.int_tensor(ids, shape);
             let attention_mask = self.int_tensor(mask, shape);
@@ -73,7 +73,7 @@ mod with_model {
                 .forward(input_ids, attention_mask, token_type_ids)
         }
 
-        fn int_tensor(&self, values: &[i64], shape: [usize; 2]) -> Tensor<SelectedBackend, 2, Int> {
+        fn int_tensor(&self, values: &[i64], shape: [usize; 2]) -> Tensor<2, Int> {
             Tensor::from_data(TensorData::new(values.to_vec(), shape), &self.device)
         }
     }
@@ -97,9 +97,9 @@ mod with_model {
     }
 
     fn mean_pool_over_unmasked_tokens(
-        hidden_states: Tensor<SelectedBackend, 3>,
+        hidden_states: Tensor<3>,
         mask: &[i64],
-        device: &Device<SelectedBackend>,
+        device: &Device,
     ) -> Vec<f32> {
         let [_, tokens, width] = hidden_states.dims();
 
@@ -107,14 +107,14 @@ mod with_model {
         let unmasked_count = weights.iter().sum::<f32>().max(1.0);
 
         let mask_column =
-            Tensor::<SelectedBackend, 2>::from_data(TensorData::new(weights, [tokens, 1]), device);
+            Tensor::<2>::from_data(TensorData::new(weights, [tokens, 1]), device);
         let weighted = hidden_states.squeeze_dim::<2>(0) * mask_column.repeat_dim(1, width);
 
         weighted
             .sum_dim(0)
             .into_data()
             .convert::<f32>()
-            .into_vec::<f32>()
+            .try_into_vec::<f32>()
             .expect("pooled tensor is f32")
             .into_iter()
             .map(|total| total / unmasked_count)

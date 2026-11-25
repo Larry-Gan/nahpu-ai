@@ -8,20 +8,19 @@ description = "Burn-backed embedding engines for NAHPU AI experiments."
 
 [features]
 default = ["flex"]
-flex = ["burn/flex"]
-wgpu = ["burn/wgpu"]
-metal = ["burn/metal"]
-vulkan = ["burn/vulkan"]
+flex = ["nahpu_burn_support/flex"]
+wgpu = ["nahpu_burn_support/wgpu"]
+metal = ["nahpu_burn_support/metal"]
+vulkan = ["nahpu_burn_support/vulkan"]
 
 [dependencies]
 nahpu_embed_core.workspace = true
+nahpu_burn_support.workspace = true
 anyhow.workspace = true
 burn.workspace = true
-burn-store = "0.21"
+burn-store = "0.22.0"
 tokenizers = "0.21"
+image.workspace = true
 
 [build-dependencies]
-burn-onnx = "0.21"
-
-[dev-dependencies]
-image = { version = "0.25", default-features = false }
+burn-onnx = "0.22.0"

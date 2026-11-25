@@ -34,7 +34,7 @@ mod text {
     use nahpu_embed_core::{normalise_to_unit_length, Embedding, TextRole};
     use tokenizers::Tokenizer;
 
-    use crate::{SelectedBackend, BACKEND_NAME};
+    use crate::BACKEND_NAME;
 
     #[allow(clippy::all, clippy::pedantic, dead_code)]
     mod model {
@@ -42,15 +42,15 @@ mod text {
     }
 
     pub struct BioClipText {
-        model: model::Model<SelectedBackend>,
+        model: model::Model,
         tokenizer: Tokenizer,
-        device: Device<SelectedBackend>,
+        device: Device,
         name: String,
     }
 
     impl BioClipText {
         pub fn load() -> Result<Self> {
-            let device = Default::default();
+            let device = crate::selected_device();
             let weights = crate::read_weights(env!("BIOCLIP_TEXT_WEIGHTS"))?;
 
             Ok(Self {
@@ -70,7 +70,7 @@ mod text {
         }
 
         fn embed_one(&self, text: &str) -> Result<Embedding> {
-            let input_ids = Tensor::<SelectedBackend, 2, Int>::from_data(
+            let input_ids = Tensor::<2, Int>::from_data(
                 TensorData::new(self.token_ids(text)?, [1, CONTEXT_LENGTH]),
                 &self.device,
             );
@@ -116,7 +116,7 @@ mod vision {
     use burn::prelude::*;
     use nahpu_embed_core::{normalise_to_unit_length, Embedding, PreprocessConfig};
 
-    use crate::{SelectedBackend, BACKEND_NAME};
+    use crate::BACKEND_NAME;
 
     #[allow(clippy::all, clippy::pedantic, dead_code)]
     mod model {
@@ -124,14 +124,14 @@ mod vision {
     }
 
     pub struct BioClipVision {
-        model: model::Model<SelectedBackend>,
-        device: Device<SelectedBackend>,
+        model: model::Model,
+        device: Device,
         name: String,
     }
 
     impl BioClipVision {
         pub fn load() -> Result<Self> {
-            let device = Default::default();
+            let device = crate::selected_device();
             let weights = crate::read_weights(env!("BIOCLIP_VISION_WEIGHTS"))?;
 
             Ok(Self {
@@ -162,7 +162,7 @@ mod vision {
                 "expected a 3x{size}x{size} tensor, got {} values",
                 pixels.len()
             );
-            let input = Tensor::<SelectedBackend, 4>::from_data(
+            let input = Tensor::<4>::from_data(
                 TensorData::new(pixels.to_vec(), [1, 3, size, size]),
                 &self.device,
             );
