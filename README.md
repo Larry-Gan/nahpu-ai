@@ -69,6 +69,10 @@ scripts/neon/.venv/bin/pip install -r scripts/neon/requirements.txt
 scripts/neon/.venv/bin/python -I scripts/neon/fetch_dataset.py
 ```
 
+On Windows, here, for the BioCLIP export above and for the clustering scripts
+below, run `python` instead of `python3` and use `.venv/Scripts/` instead of
+`.venv/bin/`.
+
 Then score one model on every setting (framing, prompts, wording):
 
 ```sh

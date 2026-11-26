@@ -391,8 +391,9 @@ def main(manifest, out, *embeddings):
         plot_genera(meta, vectors, photos, genus_results, out)
     plot_classes(projected, out)
 
-    (out / "metrics.json").write_text(json.dumps(results, indent=2) + "\n")
-    (out / "report.md").write_text(report(results))
+    # Named encoding and line ending, so Windows writes the same bytes as macOS and Linux.
+    (out / "metrics.json").write_text(json.dumps(results, indent=2) + "\n", encoding="utf-8", newline="\n")
+    (out / "report.md").write_text(report(results), encoding="utf-8", newline="\n")
     print(f"wrote {out}", file=sys.stderr)
 
 

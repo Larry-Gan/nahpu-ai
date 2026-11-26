@@ -53,7 +53,8 @@ COLUMNS = [
     "licence", "owner", "creator", "dwca_pubdate", "accessed_at", "citation",
 ]
 
-csv.field_size_limit(sys.maxsize)
+# The largest limit every platform accepts: sys.maxsize overflows a C long on Windows.
+csv.field_size_limit(2**31 - 1)
 
 
 def log(*parts):
