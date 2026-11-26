@@ -14,7 +14,7 @@ pub use clip::{load_clip, ClipModel, CLIP_MODEL_NAMES};
 pub use jina::{load_jina_text, load_jina_vision, JINA_LOGIT_SCALE};
 pub use minilm::load_minilm;
 pub use nahpu_burn_support::BACKEND_NAME;
-pub use nomic::{load_nomic_text, load_nomic_vision};
+pub use nomic::{load_nomic_text, load_nomic_vision, NOMIC_LOGIT_SCALE};
 
 // For the model modules; unused when no model is compiled in.
 #[allow(unused_imports)]

@@ -1,0 +1,154 @@
+{
+  "model": "PP-OCRv6 small",
+  "backend": "burn-vulkan",
+  "compared_with": "PaddleOCR 3.7.0",
+  "references": "crates/nahpu_ocr_burn/tests/data/neon",
+  "photos": 4,
+  "load_seconds": 0.7681992,
+  "photo_ms_median": 1374.3823,
+  "min_reference_score": 0.5,
+  "runs": [
+    {
+      "photo": "ocr01_beetle_pasimachus_sublaevis_label_closeup.jpg",
+      "width": 1400,
+      "height": 935,
+      "lines": 8,
+      "reference_lines": 8,
+      "character_error_rate": 0.011111111111111112,
+      "lines_left_out": 0,
+      "reference_lines_left_out": 0,
+      "milliseconds": 1782.6029,
+      "text": [
+        "D03.001188",
+        "FLO",
+        "A Polk County. Dis",
+        "WV",
+        "ess Preserve. 19m",
+        "75 Pitfal",
+        "t2013.RNelson",
+        "EON.DSNY.007"
+      ],
+      "differences": [
+        [
+          "W",
+          "WV"
+        ]
+      ]
+    },
+    {
+      "photo": "ocr07_mammal_blarina_brevicauda_handwritten_tag.jpg",
+      "width": 1400,
+      "height": 933,
+      "lines": 18,
+      "reference_lines": 17,
+      "character_error_rate": 0.014563106796116505,
+      "lines_left_out": 4,
+      "reference_lines_left_out": 3,
+      "milliseconds": 1091.4696,
+      "text": [
+        "NEON01IEC",
+        "Ueu",
+        "COLLECTOR:D. MIKROS",
+        "SPECIES: BLARINA BREVICAMDA",
+        "TAGID:HARV.20181002.0010E(20181002.V SEX:",
+        "SITE:HARV",
+        "PLOT/TRAPID: 01O/E/",
+        "DATE:D 20181002",
+        "neon",
+        "Type ll barcode",
+        "B00000031028",
+        "METRIC",
+        "1011121314",
+        "115",
+        "Inlulmlmsulmlmlmiludmlm",
+        "iullul",
+        "Iμlmlmlmuulmlul",
+        "INCHES"
+      ],
+      "differences": [
+        [
+          "COLLECTOR:D.MIKROS",
+          "COLLECTOR:D. MIKROS"
+        ],
+        [
+          "TAGID:HARV.2018100Z.0010E(20181002.VSEX:",
+          "TAGID:HARV.20181002.0010E(20181002.V SEX:"
+        ]
+      ]
+    },
+    {
+      "photo": "ocr08_mammal_sorex_trowbridgii_handwritten_notes.jpg",
+      "width": 1400,
+      "height": 933,
+      "lines": 17,
+      "reference_lines": 17,
+      "character_error_rate": 0.009708737864077669,
+      "lines_left_out": 0,
+      "reference_lines_left_out": 0,
+      "milliseconds": 1374.3823,
+      "text": [
+        "sex:v",
+        "NEON011U3",
+        "nen Type IV barcode",
+        "Specics:SoREk trowbridgii",
+        "WREF.20190930.0001A820190930.√",
+        "D00000028740",
+        "collccted as part of the Nationnl Ecological",
+        "observntosy",
+        "'Network",
+        "METRIC 1",
+        "6",
+        "8",
+        "110",
+        "13",
+        "114",
+        "15",
+        "INCCHES"
+      ],
+      "differences": [
+        [
+          "collected as part of the National Ecological",
+          "collccted as part of the Nationnl Ecological"
+        ]
+      ]
+    },
+    {
+      "photo": "ocr11_plant_hieracium_scouleri_herbarium_printed_label.jpg",
+      "width": 1400,
+      "height": 2100,
+      "lines": 19,
+      "reference_lines": 20,
+      "character_error_rate": 0.010940919037199124,
+      "lines_left_out": 0,
+      "reference_lines_left_out": 0,
+      "milliseconds": 1656.2567000000001,
+      "text": [
+        "9",
+        "10",
+        "ASU",
+        "cm",
+        "copyright reserved",
+        "Type Il barcode",
+        "B00000053749",
+        "Plants of NEON Domain D16 — Pacific Northwest",
+        "Asteraceae",
+        "Hieraċium scouleri Hook.",
+        "United States, Washington, Clark County. Abby Road Site,",
+        "45.7451 N -122.3830 W. WGS84. 480.26 m.",
+        "Gravel road within young forest stand.With Pseudotsuga",
+        "menziesii var. menziesii, Hypochaeris radicata, Polystichum",
+        "munitum.",
+        "H.Spencer",
+        "014",
+        "2019-06-19",
+        "Collected as part of the National Ecological Observatory Network"
+      ],
+      "differences": [
+        [
+          "neen",
+          ""
+        ]
+      ]
+    }
+  ]
+}
